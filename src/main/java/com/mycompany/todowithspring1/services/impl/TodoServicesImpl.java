@@ -8,6 +8,7 @@ import com.mycompany.todowithspring1.model.Importance;
 import com.mycompany.todowithspring1.model.CompletionStatus;
 import com.mycompany.todowithspring1.services.TodoServices;
 import com.mycompany.todowithspring1.repository.TodoRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class TodoServicesImpl implements TodoServices{
     
     @Override
     public Todo createTodo(String duty,Importance importance, CompletionStatus completionStatus) {
+        if(completionStatus == null){
+            completionStatus = CompletionStatus.continues;
+        }else if(importance == null){
+            System.out.println("importance boş");
+        }
         Todo todo = new Todo(duty,importance,completionStatus);
         return todoRepository.save(todo);
     }
@@ -40,6 +46,7 @@ public class TodoServicesImpl implements TodoServices{
     }
     
     @Override
+    @Transactional
     public Todo updateImportance(String duty, Importance importance) {
         Todo todo = findTodoByDuty(duty);
         todo.setImportance(importance);
@@ -47,6 +54,7 @@ public class TodoServicesImpl implements TodoServices{
     }
 
     @Override
+    @Transactional
     public Todo updateCompletionStatus(String duty, CompletionStatus completionStatus) {
         Todo todo = findTodoByDuty(duty);
         todo.setCompletionStatus(completionStatus);

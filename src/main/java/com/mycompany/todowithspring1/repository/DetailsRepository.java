@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface DetailsRepository extends JpaRepository<Details, Long> {
-    Optional<Details> findByDetailsAndTodo(String title, Todo todo); // belirli bir todo'ya ait detayları çekmek için
+    Optional<Details> findByDetailsAndTodo(String title, Todo todo); 
      List<Details> findAllByTodo(Todo todo);
 }
