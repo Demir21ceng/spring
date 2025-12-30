@@ -60,10 +60,9 @@ public class TodoController {
     // --------- UPDATE COMPLLETİON STATUS----------
     @PostMapping("/update/status")
     public String updateStatus(
-            @RequestParam("duty") String duty,
-            @RequestParam("completionStatus") CompletionStatus status
+            @RequestParam("duty") String duty
     ) {
-        services.updateCompletionStatus(duty, status);
+        services.updateCompletionStatus(duty, CompletionStatus.completed);
         return "redirect:/todo";
     }
 
