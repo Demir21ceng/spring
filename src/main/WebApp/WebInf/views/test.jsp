@@ -65,11 +65,7 @@
                         <form action="/todo/update/status" method="post">
                             <input type="hidden" name="duty" value="${todo.duty}"/>
 
-                            <select name="completionStatus">
-                                <option value="continues">continues</option>
-                                <option value="completed">completed</option>
-                            </select>
-
+                            
                             <button type="submit">Update Status</button>
                         </form>
                     </td>
