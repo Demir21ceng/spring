@@ -3,6 +3,8 @@ package com.mycompany.todowithspring1.controller;
 import com.mycompany.todowithspring1.model.*;
 import com.mycompany.todowithspring1.services.TodoServices;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,7 @@ public class TodoController {
 
     private final TodoServices services;
 
-    public TodoController(TodoServices services) {
+    public TodoController(@Qualifier("todoServices") TodoServices services) {
         this.services = services;
     }
 

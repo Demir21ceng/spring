@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  *
  * @author servan
  */
-@Service
+@Service("todoServices")
 public class TodoServicesImpl implements TodoServices{
 
     private final TodoRepository todoRepository;
