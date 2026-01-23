@@ -1,16 +1,19 @@
 package com.mycompany.todowithspring1.controller;
 
+import com.mycompany.todowithspring1.dto.CreateTodoRequest;
+import com.mycompany.todowithspring1.dto.TodoUpdateStatusRequest;
+import com.mycompany.todowithspring1.dto.TodoUptadeImportanceRequest;
+import com.mycompany.todowithspring1.dto.TodoDeleteRequest;
 import com.mycompany.todowithspring1.model.*;
 import com.mycompany.todowithspring1.services.TodoServices;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -27,17 +30,24 @@ public class TodoController {
     }
 
     @PostMapping("/create")
+
     public String createTodo(
-            @RequestParam("duty") String duty,
-            @RequestParam("importance") Importance importance,
-            @RequestParam(value = "completionStatus", required = false) CompletionStatus completionStatus
+            @Valid @ModelAttribute("todo") CreateTodoRequest request,
+            BindingResult bindingResult,
+            Model model
     ) {
 
-        if (completionStatus == null) {
-            completionStatus = CompletionStatus.continues;
+        if (bindingResult.hasErrors()) {
+            // Hataları JSP’ye geri gönder
+            return "test"; // formun olduğu JSP
         }
 
-        services.createTodo(duty, importance, completionStatus);
+        services.createTodo(
+                request.getDuty(),
+                request.getImportance(),
+                request.getCompletionStatus()
+        );
+
         return "redirect:/todo";
     }
 
@@ -52,26 +62,33 @@ public class TodoController {
     // --------- UPDATE IMPORTANCE----------
     @PostMapping("/update/importance")
     public String updateImportance(
-            @RequestParam("duty") String duty,
-            @RequestParam("importance") Importance importance
+            @Valid @ModelAttribute TodoUptadeImportanceRequest request,
+            BindingResult result
     ) {
-        services.updateImportance(duty, importance);
+        if(result.hasErrors()) {
+            return "redirect:/todo";
+        }
+        services.updateImportance(request.getDuty(),request.getImportance());
         return "redirect:/todo";
     }
 
     // --------- UPDATE COMPLLETİON STATUS----------
     @PostMapping("/update/status")
     public String updateStatus(
-            @RequestParam("duty") String duty
+           @Valid @ModelAttribute TodoUpdateStatusRequest request,
+           BindingResult result
     ) {
-        services.updateCompletionStatus(duty, CompletionStatus.completed);
+        if(result.hasErrors()) {
+            return "redirect:/todo";
+        }
+        services.updateCompletionStatus(request.getDuty(), CompletionStatus.completed);
         return "redirect:/todo";
     }
 
     // ---- DELETE ----
     @GetMapping("/delete")
-    public String deleteTodo(@RequestParam("duty") String duty) {
-        services.deleteTodo(duty);
+    public String deleteTodo(@Valid  TodoDeleteRequest request) {
+        services.deleteTodo(request.getDuty());
         return "redirect:/todo";
     }
 
@@ -84,8 +101,11 @@ public class TodoController {
     }
 
     // ---- LIST ONLY IMPORTANT ----
-    public List<Todo> getImportantTodos() {
-        return services.getImportantTodos();
+    @GetMapping("/important")
+    public String getImportantTodos(Model model) {
+        List<Todo> todos = services.getImportantTodos();
+        model.addAttribute("todos", todos);
+        return "test"; // JSP adı
     }
 
     // ---- GET TODO BY DUTY ----

@@ -8,6 +8,8 @@ package com.mycompany.todowithspring1.services.impl;
 import com.mycompany.todowithspring1.services.DetailsServices;
 import com.mycompany.todowithspring1.repository.DetailsRepository;
 import com.mycompany.todowithspring1.repository.TodoRepository;
+import com.mycompany.todowithspring1.Exception.GlobalExceptionHandler;
+import com.mycompany.todowithspring1.Exception.NotFoundException;
 import com.mycompany.todowithspring1.model.Todo;
 import com.mycompany.todowithspring1.model.Details;
 import java.util.List;
@@ -31,7 +33,7 @@ public class DetailsServicesImpl implements DetailsServices {
     @Override
     public Details createDetails(String details, String todoDuty) {
         Todo todo = todoRepository.findByDuty(todoDuty)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new NotFoundException("Todo not found"));
 
         Details detail = new Details();
         detail.setTitle(details);
@@ -43,16 +45,16 @@ public class DetailsServicesImpl implements DetailsServices {
     @Override
     public void deleteDetails(String title, String todoDuty) {
         Todo todo = todoRepository.findByDuty(todoDuty)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new NotFoundException("Todo not found"));
         Details detail = detailsRepository.findByDetailsAndTodo(title, todo)
-                .orElseThrow(() -> new RuntimeException("Detail not found"));
+                .orElseThrow(() -> new NotFoundException("Detail not found"));
         detailsRepository.delete(detail);
     }
 
     @Override
     public List<Details> getDetailsByTodoDuty(String todoDuty) {
         Todo todo = todoRepository.findByDuty(todoDuty)
-            .orElseThrow(() -> new RuntimeException("Todo not found"));
+            .orElseThrow(() -> new NotFoundException("Todo not found"));
 
     return detailsRepository.findAllByTodo(todo);
     }
