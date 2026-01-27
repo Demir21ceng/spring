@@ -16,15 +16,18 @@ public class Todo {
     @Column(nullable = false)
     private String duty;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDate date = LocalDate.now();
+    //  DB yönetiyor → JPA sadece okur
+    @Column(
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
+    private LocalDate date;
 
-    // Importance enum
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Importance importance;
 
-    // CompletionStatus enum (artık değişebilir)
     @Enumerated(EnumType.STRING)
     @Column(name = "completionstatus", nullable = false)
     private CompletionStatus completionStatus;
@@ -48,7 +51,7 @@ public class Todo {
     public void setDuty(String duty) { this.duty = duty; }
 
     public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+
 
     public Importance getImportance() { return importance; }
     public void setImportance(Importance importance) { this.importance = importance; }
@@ -57,7 +60,6 @@ public class Todo {
     public void setCompletionStatus(CompletionStatus completionStatus) { this.completionStatus = completionStatus; }
 
     public List<Details> getDetails() { return details; }
-    public void setDetails(List<Details> details) { this.details = details; }
 
     // ----- Yardımcı metodlar -----
     public void addDetail(Details detail) {

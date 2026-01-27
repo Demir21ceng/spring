@@ -11,6 +11,18 @@ public class TodoUptadeImportanceRequest {
     @NotNull(message = "Importance boş olamaz")
     private Importance importance;
 
+    public TodoUptadeImportanceRequest() {
+    }
+
+
+    public void setImportance(Importance importance) {
+        this.importance = importance;
+    }
+
+    public void setDuty(String duty) {
+        this.duty = duty;
+    }
+
     public String getDuty() {
         return duty;
     }

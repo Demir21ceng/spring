@@ -5,10 +5,10 @@
 package com.mycompany.todowithspring1.services.impl;
 
 
+import com.mycompany.todowithspring1.dto.DetailsResponse;
 import com.mycompany.todowithspring1.services.DetailsServices;
 import com.mycompany.todowithspring1.repository.DetailsRepository;
 import com.mycompany.todowithspring1.repository.TodoRepository;
-import com.mycompany.todowithspring1.Exception.GlobalExceptionHandler;
 import com.mycompany.todowithspring1.Exception.NotFoundException;
 import com.mycompany.todowithspring1.model.Todo;
 import com.mycompany.todowithspring1.model.Details;
@@ -31,7 +31,7 @@ public class DetailsServicesImpl implements DetailsServices {
     }
 
     @Override
-    public Details createDetails(String details, String todoDuty) {
+    public Long createDetails(String details, String todoDuty) {
         Todo todo = todoRepository.findByDuty(todoDuty)
                 .orElseThrow(() -> new NotFoundException("Todo not found"));
 
@@ -39,24 +39,20 @@ public class DetailsServicesImpl implements DetailsServices {
         detail.setTitle(details);
         detail.setTodo(todo);
         //todo.addDetail(detail);
-        return detailsRepository.save(detail);
+        return detailsRepository.save(detail).getId();
     }
 
     @Override
-    public void deleteDetails(String title, String todoDuty) {
-        Todo todo = todoRepository.findByDuty(todoDuty)
-                .orElseThrow(() -> new NotFoundException("Todo not found"));
-        Details detail = detailsRepository.findByDetailsAndTodo(title, todo)
+    public void deleteDetails(Long detailId) {
+        Details detail = detailsRepository.findById(detailId)
                 .orElseThrow(() -> new NotFoundException("Detail not found"));
+
         detailsRepository.delete(detail);
     }
 
+
     @Override
-    public List<Details> getDetailsByTodoDuty(String todoDuty) {
-        Todo todo = todoRepository.findByDuty(todoDuty)
-            .orElseThrow(() -> new NotFoundException("Todo not found"));
-
-    return detailsRepository.findAllByTodo(todo);
+    public List<DetailsResponse> getDetailsByTodoDuty(String duty) {
+        return detailsRepository.findDetailsDtoByDuty(duty);
     }
-
 }

@@ -14,6 +14,10 @@ public class CreateTodoRequest {
 
     private CompletionStatus completionStatus;
 
+    public CreateTodoRequest() {
+    }
+
+
     public String getDuty() {
         return duty;
     }

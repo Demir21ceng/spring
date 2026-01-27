@@ -3,6 +3,13 @@ package com.mycompany.todowithspring1.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class TodoDeleteRequest {
+
+    public TodoDeleteRequest() {}
+
+    public void setDuty(String duty) {
+        this.duty = duty;
+    }
+
     public String getDuty() {
         return duty;
     }

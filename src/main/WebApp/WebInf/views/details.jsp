@@ -10,11 +10,12 @@
 <h2>Details for: ${duty}</h2>
 
 <!-- ADD -->
-<form action="/details/create" method="post">
-    <input type="hidden" name="duty" value="${duty}"/>
-    <input type="text" name="title" placeholder="New detail" required/>
+<form action="${pageContext.request.contextPath}/details/create" method="post">
+    <input type="text" name="title" placeholder="Detail title" />
+    <input type="hidden" name="duty" value="${duty}" />
     <button type="submit">Add</button>
 </form>
+
 
 <br/>
 
@@ -28,11 +29,15 @@
         <tr>
             <td>${detail.title}</td>
             <td>
-                <form action="/details/delete" method="post">
-                    <input type="hidden" name="duty" value="${duty}"/>
-                    <input type="hidden" name="title" value="${detail.title}"/>
+                <!-- DELETE -->
+                <form action="${pageContext.request.contextPath}/details/delete" method="post">
+                    <input type="hidden" name="detailId" value="${detail.id}" />
+                    <input type="hidden" name="duty" value="${duty}" />
                     <button type="submit">Delete</button>
                 </form>
+
+
+
             </td>
         </tr>
     </c:forEach>

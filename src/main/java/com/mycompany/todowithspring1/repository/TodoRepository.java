@@ -1,5 +1,6 @@
 package com.mycompany.todowithspring1.repository;
 
+import com.mycompany.todowithspring1.dto.TodoResponse;
 import com.mycompany.todowithspring1.model.Importance;
 import com.mycompany.todowithspring1.model.Todo;
 
@@ -18,8 +19,31 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     Optional<Todo> findByDuty(String duty);
 
     // JPQL – OPTIMIZED QUERY
-    @Query("SELECT t FROM Todo t WHERE t.importance = :importance")
-    List<Todo> findTodosByImportance(@Param("importance") Importance importance);
+    @Query("""
+        select new com.mycompany.todowithspring1.dto.TodoResponse(
+            t.id,
+            t.duty,
+            t.importance,
+            t.completionStatus,
+            t.date
+        )
+        from Todo t
+    """)
+    List<TodoResponse> findAllTodoDto();
 
+    @Query("""
+        select new com.mycompany.todowithspring1.dto.TodoResponse(
+            t.id,
+            t.duty,
+            t.importance,
+            t.completionStatus,
+            t.date
+        )
+        from Todo t
+        where t.importance = :importance
+    """)
 
+    List<TodoResponse> findTodoDtoByImportance(@Param("importance") Importance importance);
+
+    boolean existsByDuty(String duty);
 }

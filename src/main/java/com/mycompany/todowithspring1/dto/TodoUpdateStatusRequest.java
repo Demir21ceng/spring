@@ -6,6 +6,12 @@ public class TodoUpdateStatusRequest {
     @NotBlank(message = "Duty boş olamaz")
     private String duty;
 
+    public TodoUpdateStatusRequest(){}
+
+    public void setDuty(String duty) {
+        this.duty = duty;
+    }
+
     public String getDuty() {
         return duty;
     }

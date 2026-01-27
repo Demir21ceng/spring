@@ -1,14 +1,14 @@
 package com.mycompany.todowithspring1.controller;
 
 
+import com.mycompany.todowithspring1.dto.DetailsDeleteRequest;
 import com.mycompany.todowithspring1.services.DetailsServices;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import com.mycompany.todowithspring1.dto.DetailsCreateRequest;
 
 /**
  *
@@ -24,7 +24,7 @@ public class DetailsController {
         this.detailsServices = detailsServices;
     }
 
-   
+
     @GetMapping("/{duty}")
     public String showDetails(@PathVariable("duty") String duty, Model model) {
         model.addAttribute("details", detailsServices.getDetailsByTodoDuty(duty));
@@ -32,23 +32,32 @@ public class DetailsController {
         return "details";
     }
 
+
     // 🔹 CREATE
     @PostMapping("/create")
     public String create(
-            @RequestParam("title") String title,
-            @RequestParam("duty") String duty
+           @Valid @ModelAttribute DetailsCreateRequest request,
+           BindingResult result
     ) {
-        detailsServices.createDetails(title, duty);
-        return "redirect:/details/" + duty;
+        if (result.hasErrors()) {
+            return "redirect:/details/" + request.getDuty();
+        }
+        detailsServices.createDetails(request.getTitle(), request.getDuty());
+        return "redirect:/details/" + request.getDuty();
     }
 
     // 🔹 DELETE
     @PostMapping("/delete")
     public String delete(
-            @RequestParam("title") String title,
-            @RequestParam("duty") String duty
+            @Valid @ModelAttribute DetailsDeleteRequest request,
+            BindingResult result
     ) {
-        detailsServices.deleteDetails(title, duty);
-        return "redirect:/details/" + duty;
+        if (result.hasErrors()) {
+            return "redirect:/details/" + request.getDuty();
+        }
+
+        detailsServices.deleteDetails(request.getDetailId());
+        return "redirect:/details/" + request.getDuty();
     }
+
 }

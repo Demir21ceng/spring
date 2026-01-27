@@ -1,122 +1,110 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Todo List</title>
-    </head>
-    <body>
+<head>
+    <title>Todo List</title>
+</head>
+<body>
 
-        <h2>Todo Ekle</h2>
-        <c:set var="errors" value="${requestScope['org.springframework.validation.BindingResult.todo'].fieldErrors}" />
-x
-        <!-- CREATE -->
-        <form action="${pageContext.request.contextPath}/todo/create" method="post">
+<h2>Todo Ekle</h2>
 
-            <input type="text" name="duty" placeholder="Görev adı"
-                   value="${todo.duty}" />
+<!-- CREATE -->
+<form action="${pageContext.request.contextPath}/todo/create" method="post">
 
-            <!-- DUTY ERROR -->
-            <c:if test="${not empty errors.duty}">
-                <div style="color:red">${errors.duty}</div>
-            </c:if>
+    <input type="text" name="duty" placeholder="Görev adı"
+           value="${param.duty}" />
 
-            <select name="importance">
-                <option value="">Seçiniz</option>
-                <option value="insignificant"
-                ${todo.importance == 'insignificant' ? 'selected' : ''}>
-                    insignificant
-                </option>
-                <option value="important"
-                ${todo.importance == 'important' ? 'selected' : ''}>
-                    important
-                </option>
-            </select>
+    <!-- DUTY ERROR -->
+    <c:if test="${not empty dutyError}">
+        <div style="color:red">${dutyError}</div>
+    </c:if>
 
-            <!-- IMPORTANCE ERROR -->
-            <c:if test="${not empty errors.importance}">
-                <div style="color:red">${errors.importance}</div>
-            </c:if>
+    <select name="importance">
+        <option value="">Seçiniz</option>
+        <option value="insignificant">insignificant</option>
+        <option value="important">important</option>
+    </select>
 
-            <button type="submit">Ekle</button>
-        </form>
+    <!-- IMPORTANCE ERROR -->
+    <c:if test="${not empty importanceError}">
+        <div style="color:red">${importanceError}</div>
+    </c:if>
 
-        <form action="${pageContext.request.contextPath}/todo/important" method="get">
-            <button type="submit">Sadece Important Todo'ları Göster</button>
-        </form>
+    <button type="submit">Ekle</button>
+</form>
 
-        <form action="${pageContext.request.contextPath}/todo" method="get">
-            <button type="submit">Tüm Todo'ları Göster</button>
-        </form>
+<form action="${pageContext.request.contextPath}/todo/important" method="get">
+    <button type="submit">Sadece Important Todo'ları Göster</button>
+</form>
 
+<form action="${pageContext.request.contextPath}/todo" method="get">
+    <button type="submit">Tüm Todo'ları Göster</button>
+</form>
 
-        <hr>
+<hr>
 
-        <h2>Todo List</h2>
+<h2>Todo List</h2>
 
-        <!-- READ -->
-        <table border="1">
-            <tr>
-                <th>Duty</th>
-                <th>Importance</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+<table border="1">
+    <tr>
+        <th>Duty</th>
+        <th>Date</th>
+        <th>Importance</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
 
-            <c:forEach var="todo" items="${todos}">
-                <tr>
-                    <td>${todo.duty}</td>
-                    <td>${todo.date}</td>
-                    <td>${todo.importance}</td>
-                    <td>${todo.completionStatus}</td>
+    <c:forEach var="todo" items="${todos}">
+        <tr>
+            <td>${todo.duty}</td>
+            <td>${todo.date}</td>
+            <td>${todo.importance}</td>
+            <td>${todo.completionStatus}</td>
 
-                    <td>
-                        <!-- DELETE -->
-                        <a href="${pageContext.request.contextPath}/todo/delete?duty=${todo.duty}">
-                            Sil
-                        </a>
-                        |
+            <td>
+                <!-- DELETE -->
+                <form action="${pageContext.request.contextPath}/todo/delete" method="post">
+                    <input type="hidden" name="duty" value="${todo.duty}" />
+                    <button type="submit">Sil</button>
+                </form>
 
-                        <!-- UPDATE -->
-                        <form action="/todo/update/importance" method="post">
-                            <input type="hidden" name="duty" value="${todo.duty}"/>
+                <!-- DETAILS -->
+                <a href="${pageContext.request.contextPath}/details/${todo.duty}">
+                    <button type="submit">details</button>
+                </a>
 
-                            <select name="importance">
-                                <option value="insignificant">insignificant</option>
-                                <option value="important">important</option>
-                            </select>
+                <!-- IMPORTANCE -->
+                <form action="${pageContext.request.contextPath}/todo/update/importance" method="post">
+                    <input type="hidden" name="duty" value="${todo.duty}" />
 
-                            <button type="submit">Update Importance</button>
-                        </form>
+                    <select name="importance">
+                        <option value="insignificant">insignificant</option>
+                        <option value="important">important</option>
+                    </select>
 
-                        <form action="/todo/update/status" method="post">
-                            <input type="hidden" name="duty" value="${todo.duty}"/>
+                    <button type="submit">Update Importance</button>
+                </form>
 
-                            
-                            <button type="submit">Update Status</button>
-                        </form>
-                        <c:if test="${not empty errors}">
-                            <ul style="color:red">
-                                <c:forEach var="error" items="${errors}">
-                                    <li>${error}</li>
-                                </c:forEach>
-                            </ul>
-                        </c:if>
+                <!-- COMPLETİON STATUS -->
+                <form action="${pageContext.request.contextPath}/todo/update/status" method="post">
+                    <input type="hidden" name="duty" value="${todo.duty}" />
+                    <button type="submit">Update Status</button>
+                </form>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 
-                    </td>
-                    <!-- DETAILS -->
-                    <td>
-                        <a href="/details/${todo.duty}">Details</a>
-                    </td>
+<!-- PAGINATION -->
+<c:if test="${totalPages > 1}">
+    <div style="margin-top:20px">
+        <c:forEach var="i" begin="0" end="${totalPages - 1}">
+            <a href="?page=${i}&size=5">[${i + 1}]</a>
+        </c:forEach>
+    </div>
+</c:if>
 
-                </tr>
-            </c:forEach>
-        </table>
-
-    </body>
+</body>
 </html>
-
