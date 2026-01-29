@@ -36,7 +36,7 @@
 
             if (bindingResult.hasErrors()) {
                 // Hataları JSP’ye geri gönder
-                return "test"; // formun olduğu JSP
+                return "redirect:/todo"; // formun olduğu JSP
             }
 
             services.createTodo(
@@ -132,8 +132,4 @@
             return "test"; // JSP adı
         }
 
-        // ---- GET TODO BY DUTY ----
-        public Todo findTodobyDuty(String duty) {
-            return services.findTodoByDuty(duty);
-        }
     }

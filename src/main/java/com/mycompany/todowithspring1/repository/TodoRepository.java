@@ -4,11 +4,9 @@ import com.mycompany.todowithspring1.dto.TodoResponse;
 import com.mycompany.todowithspring1.model.Importance;
 import com.mycompany.todowithspring1.model.Todo;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.query.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

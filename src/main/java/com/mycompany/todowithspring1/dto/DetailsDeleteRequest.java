@@ -22,8 +22,4 @@ public class DetailsDeleteRequest {
     public Long getDetailId() {
         return detailId;
     }
-
-    public void setDetailId(Long detailId) {
-        this.detailId = detailId;
-    }
 }
