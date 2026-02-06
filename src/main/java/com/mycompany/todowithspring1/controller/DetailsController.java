@@ -55,8 +55,7 @@ public class DetailsController {
         if (result.hasErrors()) {
             return "redirect:/details/" + request.getDuty();
         }
-
-        detailsServices.deleteDetails(request.getDetailId());
+        detailsServices.deleteDetails(request.getId());
         return "redirect:/details/" + request.getDuty();
     }
 

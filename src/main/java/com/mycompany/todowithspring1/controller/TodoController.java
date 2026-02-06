@@ -48,17 +48,6 @@
             return "redirect:/todo";
         }
 
-        // ---------- EDİT -----------
-        @GetMapping("/edit")
-        public String editTodo(
-                @RequestParam("duty") String duty,
-                Model model
-        ) {
-            Todo todo = services.findTodoByDuty(duty);
-            model.addAttribute("todo", todo);
-            return "todo-edit";
-        }
-
 
         // --------- UPDATE IMPORTANCE----------
         @PostMapping("/update/importance")
@@ -119,17 +108,17 @@
         // ---- LIST ALL ----
         @GetMapping
         public String todoList(Model model) {
-            List<TodoResponse> todos = services.getAllTodos();
-            model.addAttribute("todos", todos);
-            return "test"; // JSP adı
+            List<TodoResponse> todo = services.getAllTodos();
+            model.addAttribute("todo", todo);
+            return "todo"; // JSP adı
         }
 
         // ---- LIST ONLY IMPORTANT ----
         @GetMapping("/important")
         public String getImportantTodos(Model model) {
-            List<TodoResponse> todos = services.getImportantTodos();
-            model.addAttribute("todos", todos);
-            return "test"; // JSP adı
+            List<TodoResponse> todo = services.getImportantTodos();
+            model.addAttribute("todo", todo);
+            return "todo"; // JSP adı
         }
 
     }

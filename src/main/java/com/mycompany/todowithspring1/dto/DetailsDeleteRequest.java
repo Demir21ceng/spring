@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class DetailsDeleteRequest {
     @NotNull
-    private Long detailId;
+    private Long id;
 
     @NotNull
     private String duty;
@@ -19,7 +19,8 @@ public class DetailsDeleteRequest {
 
     public DetailsDeleteRequest() {}
 
-    public Long getDetailId() {
-        return detailId;
+    public Long getId() {
+        return id;
     }
+    public void setId(Long id) {this.id =  id; }
 }

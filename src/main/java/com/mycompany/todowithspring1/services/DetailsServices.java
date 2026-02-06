@@ -2,7 +2,7 @@
 package com.mycompany.todowithspring1.services;
 
 import com.mycompany.todowithspring1.dto.DetailsResponse;
-import com.mycompany.todowithspring1.model.Details;
+
 import java.util.List;
 
 

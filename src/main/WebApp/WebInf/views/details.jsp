@@ -31,7 +31,7 @@
             <td>
                 <!-- DELETE -->
                 <form action="${pageContext.request.contextPath}/details/delete" method="post">
-                    <input type="hidden" name="detailId" value="${detail.id}" />
+                    <input type="hidden" name="id" value="${detail.id}" />
                     <input type="hidden" name="duty" value="${duty}" />
                     <button type="submit">Delete</button>
                 </form>

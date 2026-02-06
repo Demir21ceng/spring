@@ -56,7 +56,7 @@
         <th>Actions</th>
     </tr>
 
-    <c:forEach var="todo" items="${todos}">
+    <c:forEach var="todo" items="${todo}">
         <tr>
             <td>${todo.duty}</td>
             <td>${todo.date}</td>

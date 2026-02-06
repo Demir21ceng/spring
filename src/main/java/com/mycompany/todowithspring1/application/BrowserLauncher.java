@@ -11,7 +11,7 @@ public class BrowserLauncher implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        String url = "http://localhost:8082/todo";
+        String url = "http://localhost:8082/test";
 
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(new URI(url));
