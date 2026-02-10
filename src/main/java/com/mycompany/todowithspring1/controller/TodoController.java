@@ -30,13 +30,13 @@
 
         public String createTodo(
                 @Valid @ModelAttribute("todo") CreateTodoRequest request,
-                BindingResult bindingResult
+                BindingResult result
 
         ) {
 
-            if (bindingResult.hasErrors()) {
+            if (result.hasErrors()) {
                 // Hataları JSP’ye geri gönder
-                return "redirect:/todo"; // formun olduğu JSP
+                return "todo"; // formun olduğu JSP
             }
 
             services.createTodo(
@@ -48,7 +48,6 @@
             return "redirect:/todo";
         }
 
-
         // --------- UPDATE IMPORTANCE----------
         @PostMapping("/update/importance")
         public String updateImportance(
@@ -56,7 +55,7 @@
                 BindingResult result
         ) {
             if (result.hasErrors()) {
-                return result.getAllErrors().toString();
+                return "todo";
             }
 
             services.updateImportance(
@@ -67,8 +66,6 @@
             return "redirect:/todo";
         }
 
-
-
         // --------- UPDATE COMPLLETİON STATUS----------
         @PostMapping("/update/status")
         public String updateStatus(
@@ -76,7 +73,7 @@
                 BindingResult result
         ) {
             if (result.hasErrors()) {
-                return result.getAllErrors().toString();
+                return "todo";
             }
 
             services.updateCompletionStatus(
@@ -87,7 +84,6 @@
             return "redirect:/todo";
         }
 
-
         // ---- DELETE ----
         @PostMapping("/delete")
         public String deleteTodo(
@@ -95,15 +91,12 @@
                 BindingResult result
         ) {
             if (result.hasErrors()) {
-                return result.getAllErrors().toString();
+                return "todo";
             }
 
             services.deleteTodo(request.getDuty());
             return "redirect:/todo";
         }
-
-
-
 
         // ---- LIST ALL ----
         @GetMapping

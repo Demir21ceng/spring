@@ -28,7 +28,7 @@ public class TodoServicesImpl implements TodoServices {
     private static final Logger log =
             LoggerFactory.getLogger(TodoServicesImpl.class);
 
-    @Autowired
+
     public TodoServicesImpl(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
